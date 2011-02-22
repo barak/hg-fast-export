@@ -1,0 +1,19 @@
+Source: hg-fast-export
+Section: devel
+Priority: optional
+Maintainer: Andrey Rahmatullin <wrar@wrar.name>
+Build-Depends: debhelper (>= 8), python (>= 2.6.6-3)
+Standards-Version: 3.9.1
+Homepage: http://repo.or.cz/w/fast-export.git
+Vcs-Git: git://git.debian.org/collab-maint/hg-fast-export.git
+Vcs-Browser: http://git.debian.org/?p=collab-maint/hg-fast-export.git;a=summary
+
+Package: hg-fast-export
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}, git, mercurial
+Description: mercurial to git converter using git-fast-import
+ hg-fast-export tool allows incremental import of mercurial repositories
+ to git repositories.
+ .
+ It can automatically import a local hg repo into a local git repo using
+ just one command. Subsequent importing of new changesets is supported.

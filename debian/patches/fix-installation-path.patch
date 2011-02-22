@@ -1,0 +1,31 @@
+Description: Use scripts installed to /usr/share instead of /usr/bin
+Author: Andrey Rahmatullin <wrar@wrar.name>
+Forwarded: not-needed
+Last-Update: 2011-02-23
+
+diff --git a/hg-fast-export.sh b/hg-fast-export.sh
+index a2ef9ea..5211ffe 100755
+--- a/hg-fast-export.sh
++++ b/hg-fast-export.sh
+@@ -3,7 +3,7 @@
+ # Copyright (c) 2007, 2008 Rocco Rutte <pdmef@gmx.net> and others.
+ # License: MIT <http://www.opensource.org/licenses/mit-license.php>
+ 
+-ROOT="`dirname $0`"
++ROOT="/usr/share/hg-fast-export"
+ REPO=""
+ PFX="hg2git"
+ SFX_MAPPING="mapping"
+diff --git a/hg-reset.sh b/hg-reset.sh
+index c77c291..868d06f 100755
+--- a/hg-reset.sh
++++ b/hg-reset.sh
+@@ -3,7 +3,7 @@
+ # Copyright (c) 2007, 2008 Rocco Rutte <pdmef@gmx.net> and others.
+ # License: MIT <http://www.opensource.org/licenses/mit-license.php>
+ 
+-ROOT="`dirname $0`"
++ROOT="/usr/share/hg-fast-export"
+ REPO=""
+ PFX="hg2git"
+ SFX_MARKS="marks"
