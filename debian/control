@@ -11,6 +11,7 @@ Vcs-Browser: http://git.debian.org/?p=collab-maint/hg-fast-export.git;a=summary
 Package: hg-fast-export
 Architecture: all
 Depends: ${python:Depends}, ${misc:Depends}, git, mercurial
+Recommends: git-hg
 Description: mercurial to git converter using git-fast-import
  hg-fast-export tool allows incremental import of mercurial repositories
  to git repositories.
