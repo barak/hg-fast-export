@@ -3,7 +3,7 @@ Section: vcs
 Priority: optional
 Maintainer: Andrey Rahmatullin <wrar@wrar.name>
 Build-Depends: debhelper (>= 8), python (>= 2.6.6-3)
-Standards-Version: 3.9.1
+Standards-Version: 3.9.2
 Homepage: http://repo.or.cz/w/fast-export.git
 Vcs-Git: git://git.debian.org/collab-maint/hg-fast-export.git
 Vcs-Browser: http://git.debian.org/?p=collab-maint/hg-fast-export.git;a=summary
