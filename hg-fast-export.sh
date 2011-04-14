@@ -3,7 +3,7 @@
 # Copyright (c) 2007, 2008 Rocco Rutte <pdmef@gmx.net> and others.
 # License: MIT <http://www.opensource.org/licenses/mit-license.php>
 
-ROOT="`dirname $0`"
+ROOT="$(dirname $0)"
 REPO=""
 PFX="hg2git"
 SFX_MAPPING="mapping"
@@ -64,7 +64,7 @@ done
 
 # for convenience: get default repo from state file
 if [ x"$REPO" = x -a -f "$GIT_DIR/$PFX-$SFX_STATE" ] ; then
-  REPO="`egrep '^:repo ' "$GIT_DIR/$PFX-$SFX_STATE" | cut -d ' ' -f 2`"
+  REPO="$(egrep '^:repo ' "$GIT_DIR/$PFX-$SFX_STATE" | cut -d ' ' -f 2)"
   echo "Using last hg repository \"$REPO\""
 fi
 
@@ -98,10 +98,10 @@ cat "$GIT_DIR/$PFX-$SFX_MARKS.old" "$GIT_DIR/$PFX-$SFX_MARKS.tmp" \
 
 # save SHA1s of current heads for incremental imports
 # and connectivity (plus sanity checking)
-for head in `git branch | sed 's#^..##'` ; do
-  id="`git rev-parse $head`"
+for head in $(git branch | sed 's#^..##') ; do
+  id="$(git rev-parse $head)"
   echo ":$head $id"
 done > "$GIT_DIR/$PFX-$SFX_HEADS"
 
 # check diff with color:
-# ( for i in `find . -type f | grep -v '\.git'` ; do diff -u $i $REPO/$i ; done | cdiff ) | less -r
+# ( for i in $(find . -type f | grep -v '\.git') ; do diff -u $i $REPO/$i ; done | cdiff ) | less -r
