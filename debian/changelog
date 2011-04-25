@@ -1,3 +1,9 @@
+hg-fast-export (20110318-2) unstable; urgency=low
+
+  * Add git-hg wrapper script (Closes: #622172)
+
+ -- Andrey Rahmatullin <wrar@wrar.name>  Wed, 20 Apr 2011 21:16:35 +0600
+
 hg-fast-export (20110318-1) unstable; urgency=low
 
   * Initial release (Closes: #574914)
