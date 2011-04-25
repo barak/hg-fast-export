@@ -1,0 +1,145 @@
+#!/bin/bash
+
+if which python2 >&/dev/null; then
+    PYTHON=python2
+fi
+
+set -e
+
+# Try to use GNU Coreutils readlink --canonicalize if available,
+# falling back to less robust shell script only if not found.
+if which greadlink >&/dev/null; then
+    canon="greadlink --canonicalize"
+elif readlink --canonicalize / >&/dev/null; then
+    canon="readlink --canonicalize"
+else
+    canon=canonicalize
+fi
+
+function canonicalize {
+    path="$1"
+
+    while [ -L "$path" ]; do
+	dir=$(dirname "$path")
+	path=$(ls -l "$path" | sed -e 's/.* -> //')
+	cd "$dir"
+    done
+
+    dir=$(dirname "$path")
+    file=$(basename "$path")
+    if [ ! -d "$dir" ]; then
+	echo "canonize: $dir: No such directory" >&2
+	exit 1
+    fi
+    cdir=$(cd "$dir" && pwd -P)
+    printf "%s/%s\n" "$cdir" "$file"
+}
+
+function git-current-branch {
+    git branch | egrep '^[*]' | sed 's/^\* \(.\)/\1/'
+}
+
+function check-hg-fast-export {
+    # Search for hg-fast-export $PATH, use if available, if not fall back
+    # to looking around for it in sibling directory of bin directory of
+    # the current exeuctable, possibly tracing back along symbolic link.
+    if type hg-fast-export > /dev/null 2>&1 ; then
+	HG_FAST_EXPORT=hg-fast-export
+    else
+	GITHG_HOME=$($canon $(dirname $($canon $0))/..)
+	HG_FAST_EXPORT=$GITHG_HOME/fast-export/hg-fast-export.sh
+	if type $HG_FAST_EXPORT > /dev/null 2>&1 ; then
+	    echo looking good > /dev/null
+	else
+	    echo "error: executable not found, $HG_FAST_EXPORT"
+	    echo 'Possible fixes: run "git submodule update --init" in git-hg repo, or'
+	    echo 'install hg-fast-export executable in directory on $PATH.'
+	    exit 1
+	fi
+    fi
+}
+
+function git-hg-clone {
+    check-hg-fast-export
+    HG_REMOTE=$1
+    if [ -z "$2" ]; then
+        CHECKOUT=$(basename $1)
+    else
+        CHECKOUT=$2
+    fi
+    if [ -a $CHECKOUT ]; then
+	echo error: $CHECKOUT exists
+	exit 1
+    fi
+    git init $CHECKOUT
+    (
+	cd $CHECKOUT
+	hg clone -U $HG_REMOTE .git/hgcheckout
+	git init --bare .git/hgremote
+	(
+	    cd .git/hgremote
+	    $HG_FAST_EXPORT -r ../hgcheckout
+	)
+	git remote add hg .git/hgremote
+	git fetch hg
+	git pull hg master
+    )
+}
+
+function git-hg-fetch {
+    check-hg-fast-export
+    hg -R .git/hgcheckout pull
+    (
+	cd .git/hgremote
+	$HG_FAST_EXPORT
+    )
+    git fetch hg
+}
+
+function git-hg-pull {
+    git-hg-fetch
+    git merge hg/$(git-current-branch)
+}
+
+function git-hg-checkout {
+    git-hg-fetch
+    git checkout hg/$1 -b $1
+}
+
+function git-hg-push {
+    HG_REPO=$1
+    hg convert . .git/hgcheckout
+    hg -R .git/hgcheckout push $HG_REPO
+}
+
+function usage {
+    echo "To clone a mercurial repo run:"
+    echo "  clone <path/to/mercurial/repo> [local_checkout_path]"
+    echo ""
+    echo "To work with a cloned mercurial repo use: "
+    echo "  fetch                   fetch latest branches from mercurial"
+    echo "  pull                    fetch and merge the into the current branch"
+    echo "  checkout branch_name    checkout a mercurial branch"
+}
+
+case "$1" in
+    clone)
+	git-hg-clone $2 $3
+	;;
+    fetch)
+	git-hg-fetch
+	;;
+    pull)
+	git-hg-pull
+	;;
+    checkout)
+	git-hg-checkout $2
+	;;
+    push)
+        git-hg-push $2
+        ;;
+    *)
+	usage
+	exit 1
+	;;
+esac

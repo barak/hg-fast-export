@@ -32,6 +32,13 @@ Files: debian/*
 Copyright: 2011 Andrey Rahmatullin <wrar@wrar.name>
 License: MIT
 
+Files: debian/git-hg debian/README.git-hg
+Copyright: 2009-2010 Cosmin Stejerean <cosmin@offbytwo.com>
+           2010 Dave Abrahams <dave@boostpro.com>
+           2011 Barak A. Pearlmutter <barak+git@cs.nuim.ie>
+           2011 Edmund Kohlwey <ekohlwey@gmail.com>
+License: MIT
+
 License: MIT
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal

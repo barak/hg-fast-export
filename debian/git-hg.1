@@ -1,0 +1,19 @@
+.TH GIT-HG "1" "April 2011" "git-hg" "User Commands"
+.SH NAME
+git\-hg \- tool for tracking Hg repos in Git
+.SH DESCRIPTION
+git\-hg can be used to transparently track Mercurial repositories in Git ones.
+.SH USAGE
+.SS "To clone a mercurial repo run:"
+.IP
+clone <path/to/mercurial/repo> [local_checkout_path]
+.SS "To work with a cloned mercurial repo use:"
+.TP
+\fBfetch\fR
+fetch latest branches from mercurial
+.TP
+\fBpull\fR
+fetch and merge the into the current branch
+.TP
+\fBcheckout branch_name\fR
+checkout a mercurial branch
