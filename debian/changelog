@@ -1,3 +1,10 @@
+hg-fast-export (20110318-3) UNRELEASED; urgency=low
+
+  * Upstream mods
+  * Barak minor mods
+
+ -- Barak A. Pearlmutter <bap@debian.org>  Sun, 11 Sep 2011 22:27:59 +0100
+
 hg-fast-export (20110318-2) unstable; urgency=low
 
   * Add git-hg wrapper script (Closes: #622172)
