@@ -1,16 +1,14 @@
 #!/usr/bin/make -f
 
-.PHONY: override_dh_auto_build override_dh_auto_install
-
-%:
+dh_targets=binary binary-arch binary-indep build build-arch build-indep clean install
+.PHONY: $(dh_targets)
+$(dh_targets) %:
 	dh $@ --with python2
+
+.PHONY: override_dh_auto_build override_dh_auto_install
 
 override_dh_auto_build:
 
 override_dh_auto_install:
 	install -D -m 0755 hg-fast-export.sh debian/hg-fast-export/usr/bin/hg-fast-export
 	install -D -m 0755 hg-reset.sh debian/hg-fast-export/usr/bin/hg-reset
-	mkdir -p debian/hg-fast-export/usr/share/hg-fast-export/
-	install -D -m 0755 hg-fast-export.py hg-reset.py debian/hg-fast-export/usr/share/hg-fast-export/
-	install -D -m 0644 hg2git.py debian/hg-fast-export/usr/share/hg-fast-export/
-	install -D -m 0755 debian/git-hg debian/hg-fast-export/usr/bin/

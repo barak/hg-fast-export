@@ -1,0 +1,2 @@
+hg-fast-export.py hg-reset.py hg2git.py /usr/share/hg-fast-export/
+debian/git-hg /usr/bin/
