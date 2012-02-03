@@ -24,6 +24,14 @@ place it in the root of the checkout.
 Either add `/path/to/this/checkout/bin` to your `$PATH`, or symbolic link
 `/path/to/this/checkout/bin/git-hg` into a directory on your `$PATH`.
 
+Alternatively you can execute
+
+        $ make
+        $ sudo make install
+
+to install the script and all required fast-export files in `/usr/local` (you
+can change the destination by passing eg `PREFIX=/usr` to make install)
+
 ## Usage ##
 
 - Clone an hg repo, including ones over HTTP:
@@ -41,6 +49,10 @@ Either add `/path/to/this/checkout/bin` to your `$PATH`, or symbolic link
 - Checkout a new branch from hg:
 
         $ git-hg checkout branch_name
+        
+- Push changes back to hg, optionally to a specific destination:
+
+		$ git-hg push [destination]
 
 ## Structure ##
 

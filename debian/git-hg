@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if which python2 >&/dev/null; then
     PYTHON=python2
+    export PYTHON
 fi
 
 set -e
@@ -18,13 +19,13 @@ fi
 
 function canonicalize {
     path="$1"
-
+    
     while [ -L "$path" ]; do
 	dir=$(dirname "$path")
 	path=$(ls -l "$path" | sed -e 's/.* -> //')
 	cd "$dir"
     done
-
+    
     dir=$(dirname "$path")
     file=$(basename "$path")
     if [ ! -d "$dir" ]; then
@@ -61,13 +62,13 @@ function check-hg-fast-export {
 
 function git-hg-clone {
     check-hg-fast-export
-
+    
     if [[ $1 == "--force" ]]; then
         FORCE="--force"
         shift
     fi
     HG_REMOTE=$1
-
+    
     if [ -z "$2" ]; then
         CHECKOUT=$(basename $1)
     else
@@ -88,27 +89,70 @@ function git-hg-clone {
 	)
 	git remote add hg .git/hgremote
 	git fetch hg
-	git pull hg master
+        if git branch -r | grep -q master; then
+	    local branch="master"
+        else
+            local branch=$(cd .git/hgcheckout/ && hg tip | grep branch | awk '{print $2}')
+        fi
+        git config hg.tracking.master $branch
+        git pull hg $branch
     )
 }
 
 function git-hg-fetch {
     check-hg-fast-export
+    if [[ $1 == "--force" ]]; then
+        FORCE="--force"
+        shift
+    fi
     hg -R .git/hgcheckout pull
     (
 	cd .git/hgremote
-	$HG_FAST_EXPORT
+	$HG_FAST_EXPORT $FORCE
     )
     git fetch hg
 }
 
 function git-hg-pull {
     git-hg-fetch
-    git merge hg/$(git-current-branch)
+
+    local current_branch=$(git-current-branch)
+    local remote_branch
+
+    if [ $current_branch == "master" ]; then
+        remote_branch=$(git config hg.tracking.master || true)
+        
+        if [[ -z $remote_branch ]]; then
+            if git branch -r | grep -q master; then
+                remote_branch="master"
+                git config hg.tracking.master $branch
+            else
+                echo "ERROR: Cannot determine remote branch. There is no remote branch called master, and hg.tracking.master not set. Merge the desired branch manually."
+                exit 1
+            fi
+        fi
+    else
+        remote_branch=$(git config hg.tracking.${current_branch} || true)
+        if [[ -z $remote_branch ]]; then
+             echo "ERROR: Cannot determine the remote branch to pull from. Run git merge manually against the desired remote branch."
+             echo "Alternatively, set hg.tracking.$current_branch to the name of the branch in hg the current branch should track"
+             exit 1
+        fi
+    fi
+
+    if [ "--rebase" = "$1" ]; then
+        git rebase hg/$remote_branch
+    else
+        git merge hg/$remote_branch
+    fi
 }
 
 function git-hg-checkout {
-    git-hg-fetch
+    if [[ $1 == "--force" ]]; then
+        FORCE="--force"
+        shift
+    fi
+    git-hg-fetch $FORCE
     git checkout hg/$1 -b $1
 }
 
@@ -126,7 +170,8 @@ function usage {
     echo ""
     echo "To work with a cloned mercurial repo use: "
     echo "  fetch                   fetch latest branches from mercurial"
-    echo "  pull                    fetch and merge the into the current branch"
+    echo "  pull [ --rebase ]       fetch and merge (or rebase) into the current branch"
+    echo "  push [destination]      push latest changes to mercurial"
     echo "  checkout branch_name    checkout a mercurial branch"
 }
 
@@ -135,13 +180,13 @@ case "$1" in
 	git-hg-clone $2 $3 $4
 	;;
     fetch)
-	git-hg-fetch
+	git-hg-fetch $2
 	;;
     pull)
-	git-hg-pull
+	git-hg-pull $2
 	;;
     checkout)
-	git-hg-checkout $2
+	git-hg-checkout $2 $3
 	;;
     push)
         git-hg-push $2
