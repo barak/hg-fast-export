@@ -29,11 +29,12 @@ License: GPL-2
  Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
 
 Files: debian/*
-Copyright: 2011 Andrey Rahmatullin <wrar@wrar.name>
+Copyright: 2011-2012 Andrey Rahmatullin <wrar@wrar.name>
+           2011 Barak A. Pearlmutter <barak+git@cs.nuim.ie>
 License: MIT
 
 Files: debian/git-hg debian/README.git-hg
-Copyright: 2009-2010 Cosmin Stejerean <cosmin@offbytwo.com>
+Copyright: 2009-2012 Cosmin Stejerean <cosmin@offbytwo.com>
            2010 Dave Abrahams <dave@boostpro.com>
            2011 Barak A. Pearlmutter <barak+git@cs.nuim.ie>
            2011 Edmund Kohlwey <ekohlwey@gmail.com>
