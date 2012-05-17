@@ -198,6 +198,13 @@ def export_commit(ui,repo,revision,old_marks,max,count,authors,sob,brmap):
       # manifest without expensively comparing checksums
       f=repo.status(repo.lookup(parents[0]),revnode)[:3]
       added,changed,removed=f[1],f[0],f[2]
+      for f in ctx.files():
+        if f not in man:
+          continue
+        rename = ctx.filectx(f).renamed()
+        if rename:
+          wr('R %s %s' % (rename[0], f))
+          removed.remove(rename[0])
       type='simple delta'
     else: # a merge with two parents
       wr('merge %s' % revnum_to_revref(parents[1], old_marks))
