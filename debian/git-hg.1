@@ -12,14 +12,14 @@ clone <path/to/mercurial/repo> [local_checkout_path]
 clone \-\-force <path/to/mercurial/repo> [local_checkout_path]
 .SS "To work with a cloned mercurial repo use:"
 .TP
-\fBfetch\fR
+\fBfetch [ \-\-force ]\fR
 fetch latest branches from mercurial
 .TP
-\fBpull [\-\-rebase]\fR
+\fBpull [ \-\-force ] [\-\-rebase]\fR
 fetch and merge (or rebase) the into the current branch
 .TP
 \fBpush [destination]\fR
 push latest changes to mercurial
 .TP
-\fBcheckout branch_name\fR
+\fBcheckout [ \-\-force ] branch_name\fR
 checkout a mercurial branch
