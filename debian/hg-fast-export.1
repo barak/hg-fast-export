@@ -4,7 +4,7 @@
 hg-fast-export \- import hg repository into git
 .SH SYNOPSIS
 .B hg-fast-export
-[\fI--quiet\fR] [\fI-r <repo>\fR] [\fI-m <max>\fR] [\fI-s\fR] [\fI-A <file>\fR] [\fI-M <name>\fR] [\fI-o <name>\fR]
+[\fI--quiet\fR] [\fI-r <repo>\fR] [\fI--force\fR] [\fI-m <max>\fR] [\fI-s\fR] [\fI-A <file>\fR] [\fI-M <name>\fR] [\fI-o <name>\fR]
 .SH DESCRIPTION
 Import hg repository <repo> up to either tip or <max>
 If <repo> is omitted, use last hg repository as obtained from state file,
@@ -33,3 +33,7 @@ Set the default branch name (default to 'master')
 .TP
 \fB\-o\fR
 Use <name> as branch namespace to track upstream (eg 'origin')
+.TP
+\fB\-\-force\fR
+Ignore validation errors when converting, and pass \-\-force
+to git\-fast\-import(1)
