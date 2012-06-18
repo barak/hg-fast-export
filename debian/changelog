@@ -1,3 +1,13 @@
+hg-fast-export (20120618-1) unstable; urgency=low
+
+  * New upstream snapshot
+  * Update git-hg from https://github.com/cosmin/git-hg/tree/96cb6a7b and
+    update debian/git-hg.1
+  * Update debian/hg-fast-export.1
+  * Bump Standards-Version: to 3.9.3 (no change needed)
+
+ -- Andrey Rahmatullin <wrar@wrar.name>  Mon, 18 Jun 2012 15:09:29 +0600
+
 hg-fast-export (20120203-1) unstable; urgency=low
 
   [ Barak A. Pearlmutter ]
