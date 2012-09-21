@@ -1,3 +1,14 @@
+hg-fast-export (20120921-1~exp1) experimental; urgency=low
+
+  * Upload to experimental
+  * New upstream snapshot, fixing compatibility with Mercurial 2.3
+  * Update git-hg from
+    https://github.com/cosmin/git-hg/tree/c1fabd7b9ae5f557e61206aec9774019cf670f4a
+    (Closes: #678518)
+  * Bump Standards-Version: to 3.9.4 (no change needed)
+
+ -- Andrey Rahmatullin <wrar@wrar.name>  Fri, 21 Sep 2012 22:07:06 +0600
+
 hg-fast-export (20120618-1) unstable; urgency=low
 
   * New upstream snapshot
